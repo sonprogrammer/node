@@ -12,7 +12,8 @@ var app = http.createServer(function (request, response) {
   // console.log(queryData); //*localhost:3000/?id=HTML하면 {id: 'HTML}이 출력된다(터미널에)
   // console.log(queryData.id); //*localhost:3000/?id=HTML하면 HTML이 나온다(터미널에)
   pathname = url.parse(_url, true).pathname
-  
+
+  console.log('checking git')
 
 
   // console.log(url.parse(_url, true)); 
