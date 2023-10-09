@@ -1,9 +1,42 @@
 var http = require('http');
 var fs = require('fs');
 const url = require('url');
+//밑에 이거 뭐징?
 const {
   da
 } = require('date-fns/locale');
+
+
+//밑에 기본 템플릿을 함수로 만들기
+function templateHTML(title, list, body) {
+  return `<!doctype html> 
+  <html>
+  <head>
+    <title>WEB1 - ${title}</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1><a href="/">WEB</a></h1>
+    ${list}
+    ${body}
+  </body>
+  </html>
+  `
+}
+
+function templateList(filelist) {
+  let list = '<ul>'
+
+  let i = 0;
+
+  while (i < filelist.length) {
+    list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
+    i = i + 1;
+  }
+  list = list + `</ul>`
+  return list
+}
+
 
 var app = http.createServer(function (request, response) {
   var _url = request.url; //*사용자가 주소창에 입력한 값이다
@@ -28,32 +61,36 @@ var app = http.createServer(function (request, response) {
         let title = 'Welcome'
         var description = 'hello, node.js'
 
-        let list = '<ul>'
+        // let list = '<ul>'
 
-        let i =0;
+        // let i = 0;
 
-        while(i < filelist.length){
-          list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
-          i = i + 1;
-        }
+        // while (i < filelist.length) {
+        //   list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
+        //   i = i + 1;
+        // }
 
-        list = list + '</ul>';
+        // list = list + '</ul>';
 
+        var list = templateList(filelist);
 
-        let template = `<!doctype html> 
-          <html>
-          <head>
-            <title>WEB1 - ${title}</title>
-            <meta charset="utf-8">
-          </head>
-          <body>
-            <h1><a href="/">WEB</a></h1>
-            ${list}
-            <h2>${title}</h2>
-            <p>${description}</p>
-          </body>
-          </html>
-          `
+        //밑에를 함수로 만들어줌
+        // let template = `<!doctype html> 
+        //   <html>
+        //   <head>
+        //     <title>WEB1 - ${title}</title>
+        //     <meta charset="utf-8">
+        //   </head>
+        //   <body>
+        //     <h1><a href="/">WEB</a></h1>
+        //     ${list}
+        //     <h2>${title}</h2>
+        //     <p>${description}</p>
+        //   </body>
+        //   </html>
+        //   `
+
+        var template = templateHTML(title, list, `<h2>${title}</h2>${description}`)
 
         // response.end(fs.readFileSync(__dirname + _url));
         // response.end(fs.readFileSync(queryData.id));
@@ -67,40 +104,45 @@ var app = http.createServer(function (request, response) {
         let title = 'Welcome'
         var description = 'hello, node.js'
 
-        let list = '<ul>'
+        // let list = '<ul>'
 
-        let i =0;
+        // let i =0;
 
-        while(i < filelist.length){
-          list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
-          i = i + 1;
-        }
+        // while(i < filelist.length){
+        //   list += `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`
+        //   i = i + 1;
+        // }
+        // list = list + '</ul>';
 
-        list = list + '</ul>';
-      fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
-        let title = queryData.id
-        let template = `<!doctype html> 
-        <html>
-        <head>
-          <title>WEB1 - ${title}</title>
-          <meta charset="utf-8">
-        </head>
-        <body>
-          <h1><a href="/">WEB</a></h1>
-          ${list}
-          <h2>${title}</h2>
-          <p>${description}</p>
-        </body>
-        </html>
-        `
+        var list = templateList(filelist);
 
-        // response.end(fs.readFileSync(__dirname + _url));
-        // response.end(fs.readFileSync(queryData.id));
-        response.writeHead(200);
-        response.end(template);
+        fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
+          let title = queryData.id
+          // let template = `<!doctype html> 
+          // <html>
+          // <head>
+          //   <title>WEB1 - ${title}</title>
+          //   <meta charset="utf-8">
+          // </head>
+          // <body>
+          //   <h1><a href="/">WEB</a></h1>
+          //   ${list}
+          //   <h2>${title}</h2>
+          //   <p>${description}</p>
+          // </body>
+          // </html>
+          // `
 
+
+          var template = templateHTML(title, list, `<h2>${title}</h2>${description}`)
+
+          // response.end(fs.readFileSync(__dirname + _url));
+          // response.end(fs.readFileSync(queryData.id));
+          response.writeHead(200);
+          response.end(template);
+
+        })
       })
-    })
     }
 
   } else {
