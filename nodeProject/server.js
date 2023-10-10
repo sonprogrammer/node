@@ -25,7 +25,7 @@ app.get('/api/user',(req, res) =>{
 })
 
 app.post('/api/user', (req, res) =>{
-    console.log(req.body) // 여기서 req.body는 클라이언트에서 서버로 중요한 데이터를 전송할 때 사용된다.  
+    console.log(req.body) // user가 서버에 body부분을 보내서 데이터 베이스에 저장함
     users.push(req.body) //*user추가 부분 -> 현재 들어오는 데이터 req.body를 추가한다 
     res.json(users)
 })
